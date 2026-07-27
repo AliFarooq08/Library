@@ -1,4 +1,4 @@
-const myLibrary = []
+let myLibrary = []
 const libraryContainer = document.getElementById("library-container")
 const newBookForm = document.getElementById("form-popup")
 const newBook = document.getElementById("new-book")
@@ -183,3 +183,13 @@ newBook.addEventListener("click", () => {
         updateBookDisplay(myLibrary)
     })
 })
+window.addEventListener("beforeunload", () => {
+    localStorage.setItem("savedList", JSON.stringify(myLibrary));
+});
+window.addEventListener("load", () => {
+    let savedList = localStorage.getItem("savedList")
+    if (savedList) {
+        myLibrary = JSON.parse(savedList);
+        updateBookDisplay(myLibrary)
+    }
+});
