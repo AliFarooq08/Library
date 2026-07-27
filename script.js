@@ -35,8 +35,7 @@ function addBookToLibrary(object) {
 
 function updateBookDisplay(list) {
     libraryContainer.replaceChildren()
-    for (let i = 0; i < list.length; i++) {
-        console.log(i)
+    list.forEach(book => {
         const bookCard = document.createElement("p")
         const bookTitle = document.createElement("p")
         const bookAuthor = document.createElement("p")
@@ -51,10 +50,10 @@ function updateBookDisplay(list) {
         bookStatus.classList.add("card-text")
         remove.classList.add("remove")
         changeStatus.classList.add("change-status")
-        bookTitle.textContent = `Title: ${list[i].title}`
-        bookAuthor.textContent =  `Author: ${list[i].author}`
-        bookPages.textContent = `Pages: ${list[i].pages}`
-        bookStatus.textContent = `Status: ${list[i].read}`
+        bookTitle.textContent = `Title: ${book.title}`
+        bookAuthor.textContent =  `Author: ${book.author}`
+        bookPages.textContent = `Pages: ${book.pages}`
+        bookStatus.textContent = `Status: ${book.read}`
         remove.textContent = `Remove`
         changeStatus.textContent = `Change Book Status`
         libraryContainer.appendChild(bookCard)
@@ -65,27 +64,24 @@ function updateBookDisplay(list) {
         bookCard.appendChild(remove)
         bookCard.appendChild(changeStatus)
         remove.addEventListener("click", () => {
-            console.log(list)
-            list.splice(i, 1)
+            console.log(`I will remove ${book}`)
+            list.splice(book, 1)
             console.log(list)
             bookCard.remove()
+            console.log(list)
 
         })
         changeStatus.addEventListener("click", () => {
-            console.log(list)
-            console.log(i)
-            console.log(list[i])
-            console.log(list[i].read)
-            if (list[i].read == "read") {
-                list[i].read = "unread"
-                bookStatus.textContent = `Status: ${list[i].read}`
+            if (book.read == "read") {
+                book.read = "unread"
+                bookStatus.textContent = `Status: ${book.read}`
             }
-            else if (list[i].read == "unread") {
-                list[i].read = "read"
-                bookStatus.textContent = `Status: ${list[i].read}`
+            else if (book.read == "unread") {
+                book.read = "read"
+                bookStatus.textContent = `Status: ${book.read}`
             }
         })
-    }
+    })
 }
 
 newBook.addEventListener("click", () => {
@@ -156,9 +152,11 @@ newBook.addEventListener("click", () => {
     const submitButton = document.createElement("button")
     submitButton.setAttribute("type", "submit")
     submitButton.textContent = "submit"
+
     const formContainer = document.createElement("div")
     formContainer.setAttribute("id", "form-container")
     body.insertBefore(formContainer, header);
+
     formContainer.appendChild(myForm)
     myForm.appendChild(labelBookTitle)
     myForm.appendChild(inputBookTitle)
