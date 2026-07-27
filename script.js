@@ -3,6 +3,10 @@ const libraryContainer = document.getElementById("library-container")
 const newBookForm = document.getElementById("form-popup")
 const newBook = document.getElementById("new-book")
 const body = document.querySelector("body")
+const header = document.querySelector("header")
+const theHobbit = new Book("The Hobbit", "J.R.R. Tolkien", "295", "unread")
+addBookToLibrary(theHobbit)
+updateBookDisplay(myLibrary)
 function Book(title, author, pages, read) {
     if (!new.target) {
         throw Error("You must use the 'new' operator to call the constructor")
@@ -15,24 +19,24 @@ function Book(title, author, pages, read) {
     this.info = function info() {
         if (this.read === "read") {
             console.log(`${this.title} by ${this.author}, ${this.pages} pages, read.`)
-            bo
         }
         else if (this.read === "unread") {
             console.log(`${this.title} by ${this.author}, ${this.pages} pages, not read yet.`)
         }
         else {throw Error("The read parameter must be written either as 'read' or 'unread'")}
     }
-
 }
 
 function addBookToLibrary(object) {
     myLibrary.push(object)
+    console.log(myLibrary)
     return myLibrary
 }
 
 function updateBookDisplay(list) {
     libraryContainer.replaceChildren()
-    for (i = 0; i < list.length; i++) {
+    for (let i = 0; i < list.length; i++) {
+        console.log(i)
         const bookCard = document.createElement("p")
         const bookTitle = document.createElement("p")
         const bookAuthor = document.createElement("p")
@@ -46,9 +50,8 @@ function updateBookDisplay(list) {
         bookPages.classList.add("card-text")
         bookStatus.classList.add("card-text")
         remove.classList.add("remove")
-        console.log(list[i])
         changeStatus.classList.add("change-status")
-        bookTitle.textContent = `${list[i].title}`
+        bookTitle.textContent = `Title: ${list[i].title}`
         bookAuthor.textContent =  `Author: ${list[i].author}`
         bookPages.textContent = `Pages: ${list[i].pages}`
         bookStatus.textContent = `Status: ${list[i].read}`
@@ -61,6 +64,27 @@ function updateBookDisplay(list) {
         bookCard.appendChild(bookStatus)
         bookCard.appendChild(remove)
         bookCard.appendChild(changeStatus)
+        remove.addEventListener("click", () => {
+            console.log(list)
+            list.splice(i, 1)
+            console.log(list)
+            bookCard.remove()
+
+        })
+        changeStatus.addEventListener("click", () => {
+            console.log(list)
+            console.log(i)
+            console.log(list[i])
+            console.log(list[i].read)
+            if (list[i].read == "read") {
+                list[i].read = "unread"
+                bookStatus.textContent = `Status: ${list[i].read}`
+            }
+            else if (list[i].read == "unread") {
+                list[i].read = "read"
+                bookStatus.textContent = `Status: ${list[i].read}`
+            }
+        })
     }
 }
 
@@ -77,6 +101,7 @@ newBook.addEventListener("click", () => {
     inputBookTitle.setAttribute("type", "text")
     inputBookTitle.setAttribute("id", "book-title")
     inputBookTitle.setAttribute("required", "")
+    inputBookTitle.setAttribute("maxlength", "255")
 
     const labelBookAuthor = document.createElement("label")
     labelBookAuthor.textContent = "Book Author: "
@@ -86,6 +111,7 @@ newBook.addEventListener("click", () => {
     inputBookAuthor.setAttribute("type", "text")
     inputBookAuthor.setAttribute("id", "book-author")
     inputBookAuthor.setAttribute("required", "")
+    inputBookAuthor.setAttribute("maxlength", "50")
 
     const labelBookPages = document.createElement("label")
     labelBookPages.textContent = "Pages: "
@@ -95,11 +121,14 @@ newBook.addEventListener("click", () => {
     inputBookPages.setAttribute("type", "number")
     inputBookPages.setAttribute("id", "book-pages")
     inputBookPages.setAttribute("required", "")
+    inputBookPages.setAttribute("maxlength", "10")
 
     const inputRadioContainer = document.createElement("div")
     inputRadioContainer.setAttribute("id", "input-radio-container")
     const unreadContainer = document.createElement("div")
+    unreadContainer.setAttribute("id", "radio-align")
     const readContainer = document.createElement("div")
+    readContainer.setAttribute("id", "radio-align")
 
     const labelChooseUnread = document.createElement("label")
     labelChooseUnread.textContent = "Unread"
@@ -127,8 +156,10 @@ newBook.addEventListener("click", () => {
     const submitButton = document.createElement("button")
     submitButton.setAttribute("type", "submit")
     submitButton.textContent = "submit"
-
-    body.appendChild(myForm)
+    const formContainer = document.createElement("div")
+    formContainer.setAttribute("id", "form-container")
+    body.insertBefore(formContainer, header);
+    formContainer.appendChild(myForm)
     myForm.appendChild(labelBookTitle)
     myForm.appendChild(inputBookTitle)
     myForm.appendChild(labelBookAuthor)
@@ -138,22 +169,19 @@ newBook.addEventListener("click", () => {
     myForm.appendChild(inputRadioContainer)
     inputRadioContainer.appendChild(unreadContainer)
     inputRadioContainer.appendChild(readContainer)
-    unreadContainer.appendChild(labelChooseUnread)
     unreadContainer.appendChild(inputChooseUnread)
-    readContainer.appendChild(labelChooseRead)
+    unreadContainer.appendChild(labelChooseUnread)
     readContainer.appendChild(inputChooseRead)
+    readContainer.appendChild(labelChooseRead)
     myForm.appendChild(submitButton)
 
     myForm.addEventListener("submit", (event) => {
         event.preventDefault()
         const selectedStatus = document.querySelector('input[name="read-or-not"]:checked').value
         const bookItem = new Book(inputBookTitle.value, inputBookAuthor.value, inputBookPages.value, selectedStatus)
-        myForm.remove() 
+        formContainer.remove() 
         console.log(bookItem)
         addBookToLibrary(bookItem)
         updateBookDisplay(myLibrary)
     })
 })
-
-const theHobbit = new Book("The Hobbit", "J.R.R. Tolkien", "295", "unread")
-console.log(theHobbit.info())
