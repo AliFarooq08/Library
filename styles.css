@@ -32,7 +32,7 @@ header {
     font-size: 2rem;
     font-weight: bold;
 }
-#new-book, .remove, .change-status {
+#new-book, .remove, .change-status, #clear-local-and-refresh {
     background-color: green;
     color: white;
     padding: 8px 16px;
@@ -119,4 +119,8 @@ input[type="radio"] {
 }
 .remove, .change-status {
     width: 75%;
+}
+
+#clear-local-and-refresh {
+    margin-top: 16px;
 }
