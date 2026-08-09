@@ -65,12 +65,12 @@ function updateBookDisplay(list) {
         bookCard.appendChild(remove)
         bookCard.appendChild(changeStatus)
         remove.addEventListener("click", () => {
-            console.log(`I will remove ${book}`)
-            list.splice(book, 1)
+            console.log(`I will remove ${book.title}`)
+            list.splice(list.indexOf(book), 1)
             console.log(list)
             bookCard.remove()
             console.log(list)
-
+            localStorage.setItem("savedList", JSON.stringify(myLibrary));
         })
         changeStatus.addEventListener("click", () => {
             if (book.read == "read") {
