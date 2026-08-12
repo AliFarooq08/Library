@@ -173,6 +173,25 @@ newBook.addEventListener("click", () => {
     readContainer.appendChild(inputChooseRead)
     readContainer.appendChild(labelChooseRead)
     myForm.appendChild(submitButton)
+    inputBookTitle.setCustomValidity("Insert a book title!")
+    inputBookAuthor.setCustomValidity("Insert a book author!")
+    inputBookPages.setCustomValidity("Insert a number!")
+
+    inputBookTitle.addEventListener("input", () => {
+        if (inputBookTitle.value === "") {
+            inputBookTitle.setCustomValidity("Insert a book title!")
+        } else {inputBookTitle.setCustomValidity("")}
+    });
+    inputBookAuthor.addEventListener("input", () => {
+        if (!inputBookAuthor.value === "") {
+            inputBookAuthor.setCustomValidity("Insert a book author!")
+        } else {inputBookAuthor.setCustomValidity("")}
+    });
+    inputBookPages.addEventListener("input", () => {
+        if (!inputBookPages === "") {
+            inputBookPages.setCustomValidity("Insert a number!")
+        } else {inputBookPages.setCustomValidity("")}
+    });
 
     myForm.addEventListener("submit", (event) => {
         event.preventDefault()
